@@ -1,0 +1,6 @@
+FROM mysql:8.0.19
+
+ENV MYSQL_RANDOM_ROOT_PASSWORD="yes"
+ENV MYSQL_DATABASE="poseidon"
+ENV MYSQL_USER="poseidon"
+ENV MYSQL_PASSWORD="poseidon"
