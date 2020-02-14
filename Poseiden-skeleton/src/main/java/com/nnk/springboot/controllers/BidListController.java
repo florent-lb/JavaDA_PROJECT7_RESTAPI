@@ -4,6 +4,7 @@ import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 
 
 @Controller
+@Slf4j
 public class BidListController {
 
     @Autowired
@@ -40,6 +42,7 @@ public class BidListController {
         if(!result.hasErrors())
         {
             repository.save(bid);
+            logger.info("Add BidList" +bid.toString());
             model.addAttribute("bids",repository.findAll());
             return "redirect:/bidList/list";
         }
@@ -63,6 +66,7 @@ public class BidListController {
         }
         bidList.setBidListId(id);
         repository.save(bidList);
+        logger.info("Update BidList" +bidList.toString());
         model.addAttribute("bids",repository.findAll());
         return "redirect:/bidList/list";
     }
@@ -71,6 +75,7 @@ public class BidListController {
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         BidList bidList = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid BidList Id:" + id));
         repository.delete(bidList);
+        logger.info("Delete BidList" +bidList.toString());
         model.addAttribute("bidList",bidList);
         return "redirect:/bidList/list";
     }

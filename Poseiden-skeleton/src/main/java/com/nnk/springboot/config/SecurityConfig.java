@@ -19,7 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/bidList/**", "/rating/**", "/ruleName/**", "/trade/**", "/curvePoint/**").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/bidList/**", "/rating/**", "/ruleName/**", "/trade/**", "/curvePoint/**")
+                .hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/user/**").permitAll()
                 .and().formLogin()  //login configuration
                 .defaultSuccessUrl("/bidList/list")
@@ -28,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and().exceptionHandling() //exception handling configuration
                 .accessDeniedPage("/app/error");
+
     }
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

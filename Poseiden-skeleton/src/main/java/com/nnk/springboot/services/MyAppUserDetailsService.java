@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Service
 public class MyAppUserDetailsService implements UserDetailsService {
@@ -20,8 +21,7 @@ public class MyAppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         User user = userRepository.findByUserName(userName);
         GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
-        UserDetails userDetails = (UserDetails)new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), Arrays.asList(authority));
-        return userDetails;
+        return (UserDetails)new org.springframework.security.core.userdetails.User(user.getUsername(),
+                user.getPassword(), Collections.singletonList(authority));
     }
 }
