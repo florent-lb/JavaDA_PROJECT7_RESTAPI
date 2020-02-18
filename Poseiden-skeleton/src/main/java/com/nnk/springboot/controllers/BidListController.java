@@ -76,7 +76,6 @@ public class BidListController {
         BidList bidList = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid BidList Id:" + id));
         repository.delete(bidList);
         logger.info("Delete BidList" +bidList.toString());
-        model.addAttribute("bidList",bidList);
         return "redirect:/bidList/list";
     }
 }
