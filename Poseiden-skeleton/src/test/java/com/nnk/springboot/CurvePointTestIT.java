@@ -98,7 +98,7 @@ public class CurvePointTestIT {
     @Test
     @WithUserDetails("admin")
     @DisplayName("Curve Point Delete")
-    public void add_WhenDeleteBid_MustBeOk() throws Exception {
+    public void add_WhenDeleteCurve_MustBeOk() throws Exception {
 
         mockMvc.perform(get("/curvePoint/delete/"+11))
                 .andExpect(status().isFound());
