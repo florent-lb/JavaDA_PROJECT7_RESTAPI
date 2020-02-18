@@ -19,7 +19,7 @@ import javax.validation.Valid;
 public class CurveController {
 
     @Autowired
-    CurvePointRepository repository;
+    private CurvePointRepository repository;
 
     @RequestMapping("/curvePoint/list")
     public String home(Model model)
