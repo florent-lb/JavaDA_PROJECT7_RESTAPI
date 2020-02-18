@@ -1,5 +1,7 @@
 package com.nnk.springboot.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "rating")
+@Data
+@EqualsAndHashCode(of = "id")
 public class Rating {
 
     @Id
