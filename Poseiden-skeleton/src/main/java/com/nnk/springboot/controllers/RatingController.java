@@ -19,7 +19,7 @@ import javax.validation.Valid;
 public class RatingController {
 
     @Autowired
-    RatingRepository repository;
+    private RatingRepository repository;
 
     @RequestMapping("/rating/list")
     public String home(Model model)
@@ -36,7 +36,6 @@ public class RatingController {
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
 
-        model.asMap().forEach((s, o) -> logger.info("KEY : " +s + "  | Val : " + o.toString()));
         if(!result.hasErrors())
         {
             repository.save(rating);

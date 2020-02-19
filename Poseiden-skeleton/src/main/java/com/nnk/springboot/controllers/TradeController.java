@@ -1,6 +1,10 @@
 package com.nnk.springboot.controllers;
 
+import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.repositories.TradeRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,43 +16,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
+@Slf4j
 public class TradeController {
-    // TODO: Inject Trade service
+
+    @Autowired
+    private TradeRepository repository;
 
     @RequestMapping("/trade/list")
     public String home(Model model)
     {
-        // TODO: find all Trade, add to model
+        model.addAttribute("trades",repository.findAll());
         return "trade/list";
     }
 
     @GetMapping("/trade/add")
-    public String addUser(Trade bid) {
+    public String addUser(Trade trade) {
         return "trade/add";
     }
 
     @PostMapping("/trade/validate")
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Trade list
+        if(!result.hasErrors())
+        {
+            repository.save(trade);
+            logger.info("Add Trade " +trade.toString());
+            model.addAttribute("trades",repository.findAll());
+            return "redirect:/trade/list";
+        }
         return "trade/add";
     }
 
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Trade by Id and to model then show to the form
+        Trade trade = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Trade Id:" + id));
+        model.addAttribute("trade",trade);
         return "trade/update";
     }
 
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Trade and return Trade list
+        if(result.hasErrors())
+        {
+            return "trade/update";
+        }
+        trade.setTradeId(id);
+        repository.save(trade);
+        logger.info("Update Trade " +trade.toString());
         return "redirect:/trade/list";
     }
 
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Trade by Id and delete the Trade, return to Trade list
+        Trade trade = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Trade Id:" + id));
+        repository.delete(trade);
+        logger.info("Delete Trade " +trade.toString());
         return "redirect:/trade/list";
     }
 }
