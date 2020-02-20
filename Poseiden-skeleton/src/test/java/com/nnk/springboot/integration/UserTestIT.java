@@ -1,8 +1,8 @@
-package com.nnk.springboot;
+package com.nnk.springboot.integration;
 
 import com.nnk.springboot.configuration.SpringSecurityTestConfiguration;
-import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.domain.User;
 import org.hamcrest.beans.HasPropertyWithValue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,86 +27,89 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @AutoConfigureMockMvc
 @SqlGroup({
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "classpath:TradeData.sql")
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "classpath:UserData.sql")
 })
-public class TradeTestIT {
+public class UserTestIT {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     @WithUserDetails("admin")
-    @DisplayName("Trade Home")
-    public void add_WhenCallTradeHome_MustBeOk() throws Exception {
+    @DisplayName("User Home")
+    public void add_WhenCallUser_MustBeOk() throws Exception {
 
-        mockMvc.perform(get("/trade/list"))
+        mockMvc.perform(get("/user/list"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("trades"));
+                .andExpect(model().attributeExists("users"));
     }
 
     @Test
     @WithUserDetails("admin")
-    @DisplayName("Trade Add")
-    public void add_WhenAddTrade_MustHaveNewBid() throws Exception {
+    @DisplayName("User Add")
+    public void add_WhenAddUser_MustHaveNewBid() throws Exception {
 
-        Trade trade = new Trade();
-        trade.setAccount("ACCOUNT UNIQUE!!");
-        trade.setType("TYPE");
-        trade.setBuyQuantity(10.0);
+        User user = new User();
+        user.setPassword("test");
+        user.setFullname("test");
+        user.setRole("user");
+        user.setUsername("test");
 
-        mockMvc.perform(post("/trade/validate")
+        mockMvc.perform(post("/user/validate")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("account", trade.getAccount())
-                .param("type", trade.getType())
-                .param("buyQuantity", trade.getBuyQuantity().toString())
+                .param("password", user.getPassword())
+                .param("fullname", user.getFullname())
+                .param("role", user.getRole())
+                .param("username", user.getUsername())
                 .with(csrf())
         )
 
                 .andExpect(status().isFound());
 
-        mockMvc.perform(get("/trade/list"))
+        mockMvc.perform(get("/user/list"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("trades"))
-                .andExpect(model().attribute("trades",
-                        hasItem(HasPropertyWithValue.hasProperty("account",is(trade.getAccount())))));
+                .andExpect(model().attributeExists("users"))
+                .andExpect(model().attribute("users",
+                        hasItem(HasPropertyWithValue.hasProperty("username",is(user.getUsername())))));
     }
 
     @Test
     @WithUserDetails("admin")
-    @DisplayName("Trade Update")
+    @DisplayName("User Update")
     public void add_WhenUpdateABid_MustBeFoundWithNewValues() throws Exception {
 
-        mockMvc.perform(post("/trade/update/"+10)
+        mockMvc.perform(post("/user/update/"+10)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("account", "NEW_ACCOUNT")
-                .param("type", "NEW_TYPE")
-                .param("buyQuantity", "103.3")
+                .param("password", "NEW_PASSWORD")
+                .param("fullname", "NEW_FULLNAME")
+                .param("role", "NEW_ROLE")
+                .param("username", "NEW_USERNAME")
                 .with(csrf())
         ).andExpect(status().isFound());
 
-        Trade trade = new Trade();
-        trade.setTradeId(10);
+        User user = new User();
+        user.setId(10);
 
-        mockMvc.perform(get("/trade/list"))
+        mockMvc.perform(get("/user/list"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("trades"))
-                .andExpect(model().attribute("trades",
-                        hasItem(trade)));
+                .andExpect(model().attributeExists("users"))
+                .andExpect(model().attribute("users",
+                        hasItem(user)));
 
     }
 
     @Test
     @WithUserDetails("admin")
-    @DisplayName("Trade Delete")
+    @DisplayName("User Delete")
     public void add_WhenDeleteBid_MustBeOk() throws Exception {
 
-        mockMvc.perform(get("/trade/delete/"+11))
+        mockMvc.perform(get("/user/delete/"+11))
                 .andExpect(status().isFound());
 
-        mockMvc.perform(get("/trade/list"))
-                .andExpect(model().attributeExists("trades"))
-                .andExpect(model().attribute("trades",
-                        not(hasItem(HasPropertyWithValue.hasProperty("tradeId",is(11))))));
+        mockMvc.perform(get("/user/list"))
+                .andExpect(model().attributeExists("users"))
+                .andExpect(model().attribute("users",
+                        not(hasItem(HasPropertyWithValue.hasProperty("id",is(11))))));
     }
 
 

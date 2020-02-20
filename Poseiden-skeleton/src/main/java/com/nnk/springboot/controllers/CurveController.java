@@ -20,19 +20,29 @@ public class CurveController {
 
     @Autowired
     private CurvePointRepository repository;
-
+    /**
+     * Load all Curve Point
+     * @param model current Model
+     * @return itself update
+     */
     @RequestMapping("/curvePoint/list")
     public String home(Model model)
     {
         model.addAttribute("curves",repository.findAll());
         return "curvePoint/list";
     }
-
+    /**
+     * Return add Curve Point list
+     * @return itself update
+     */
     @GetMapping("/curvePoint/add")
-    public String addBidForm(CurvePoint curvePoint) {
+    public String addCurvePointForm(CurvePoint curvePoint) {
         return "curvePoint/add";
     }
-
+    /**
+     * Use for validate a new Curve Point
+     * @return redirect to Curve Point Home if valid
+     */
     @PostMapping("/curvePoint/validate")
     public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
         if(!result.hasErrors())
@@ -44,16 +54,22 @@ public class CurveController {
         }
         return "curvePoint/add";
     }
-
+    /**
+     * Use for navigate to the update form with the Curve Point asked
+     * @return redirect to Curve Point update resource
+     */
     @GetMapping("/curvePoint/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         CurvePoint curvePoint = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Curve Id:" + id));
         model.addAttribute("curve",curvePoint);
         return "curvePoint/update";
     }
-
+    /**
+     * Use for update a bid and validate it
+     * @return redirect to Curve Point Home if valid
+     */
     @PostMapping("/curvePoint/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
+    public String updateCurvePoint(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
                              BindingResult result, Model model) {
         if(result.hasErrors())
         {
@@ -64,9 +80,12 @@ public class CurveController {
         logger.info("Update Curve " +curvePoint.toString());
         return "redirect:/curvePoint/list";
     }
-
+    /**
+     * Use for delete a bid
+     * @return redirect to Curve Point Home
+     */
     @GetMapping("/curvePoint/delete/{id}")
-    public String deleteBid(@PathVariable("id") Integer id, Model model) {
+    public String deleteCurvePoint(@PathVariable("id") Integer id, Model model) {
         CurvePoint curvePoint = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid CurvePoint Id:" + id));
         repository.delete(curvePoint);
         logger.info("Delete CurvePoint " +curvePoint.toString());

@@ -21,19 +21,29 @@ public class TradeController {
 
     @Autowired
     private TradeRepository repository;
-
+    /**
+     * Load all Trade
+     * @param model current Model
+     * @return itself update
+     */
     @RequestMapping("/trade/list")
     public String home(Model model)
     {
         model.addAttribute("trades",repository.findAll());
         return "trade/list";
     }
-
+    /**
+     * Return add Trade list
+     * @return itself update
+     */
     @GetMapping("/trade/add")
     public String addUser(Trade trade) {
         return "trade/add";
     }
-
+    /**
+     * Use for validate a new TradeList
+     * @return redirect to Trade Home if valid
+     */
     @PostMapping("/trade/validate")
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
         if(!result.hasErrors())
@@ -45,14 +55,20 @@ public class TradeController {
         }
         return "trade/add";
     }
-
+    /**
+     * Use for navigate to the update form with the Trade asked
+     * @return redirect to Trade update resource
+     */
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         Trade trade = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Trade Id:" + id));
         model.addAttribute("trade",trade);
         return "trade/update";
     }
-
+    /**
+     * Use for update a bid and validate it
+     * @return redirect to Trade Home if valid
+     */
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
                              BindingResult result, Model model) {
@@ -65,7 +81,10 @@ public class TradeController {
         logger.info("Update Trade " +trade.toString());
         return "redirect:/trade/list";
     }
-
+    /**
+     * Use for delete a bid
+     * @return redirect to Trade Home
+     */
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
         Trade trade = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Trade Id:" + id));
