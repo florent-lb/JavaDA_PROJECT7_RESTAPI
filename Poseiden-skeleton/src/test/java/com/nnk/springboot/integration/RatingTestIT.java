@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.integration;
 
 import com.nnk.springboot.configuration.SpringSecurityTestConfiguration;
 import com.nnk.springboot.domain.Rating;

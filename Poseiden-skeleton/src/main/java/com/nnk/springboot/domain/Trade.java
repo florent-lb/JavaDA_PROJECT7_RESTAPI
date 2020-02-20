@@ -1,5 +1,7 @@
 package com.nnk.springboot.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "trade")
+@Data
+@EqualsAndHashCode(of = "tradeId")
 public class Trade {
 
     @Id

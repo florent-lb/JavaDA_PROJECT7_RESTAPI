@@ -24,6 +24,11 @@ public class BidListController {
     @Autowired
     private BidListRepository repository;
 
+    /**
+     * Load all Bids
+     * @param model current Model
+     * @return itself update
+     */
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
@@ -31,12 +36,19 @@ public class BidListController {
         return "bidList/list";
     }
 
+    /**
+     * Return add Bids list
+     * @return itself update
+     */
     @GetMapping("/bidList/add")
     public String addBidForm(BidList bid) {
 
         return "bidList/add";
     }
-
+    /**
+     * Use for validate a new BidList
+     * @return redirect to Bid Home if valid
+     */
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
         if(!result.hasErrors())
@@ -48,7 +60,10 @@ public class BidListController {
         }
         return "bidList/add";
     }
-
+    /**
+     * Use for navigate to the update form with the Bid asked
+     * @return redirect to Bid update resource
+     */
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
 
@@ -56,7 +71,10 @@ public class BidListController {
         model.addAttribute("bidList",bidList);
         return "bidList/update";
     }
-
+    /**
+     * Use for update a bid and validate it
+     * @return redirect to Bid Home if valid
+     */
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
                              BindingResult result, Model model) {
@@ -70,7 +88,10 @@ public class BidListController {
         model.addAttribute("bids",repository.findAll());
         return "redirect:/bidList/list";
     }
-
+    /**
+     * Use for delete a bid
+     * @return redirect to Bid Home
+     */
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         BidList bidList = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid BidList Id:" + id));

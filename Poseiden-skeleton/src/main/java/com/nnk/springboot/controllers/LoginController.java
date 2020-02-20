@@ -14,6 +14,10 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Login Home
+     * @return Model and view for login user
+     */
     @GetMapping("login")
     public ModelAndView login() {
         ModelAndView mav = new ModelAndView();
