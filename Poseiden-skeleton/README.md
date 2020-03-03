@@ -1,31 +1,35 @@
-# spring-boot
+# Poseidon
+A simple app to input data. All views are be secured. You can register new users with an Administrator account.
 ## Technical:
 
 1. Framework: Spring Boot v2.2.4
 2. Java 13
 3. Thymeleaf
 4. Bootstrap v.4.3.1
+5. MySQL 8.0.19
+## Installation
+Default database : MySQL 8.0.19
+### Testing
+For Spring : Use application.properties<br/>
+For Docker BDD : Use Dockerfile-test
+
+Ready for Testing from your IDE
+
+### Build Production
+
+For Spring : Use application-prod.properties (update jdbc connection values)
+<ul>
+<li><code>spring.jpa.hibernate.ddl-auto=update</code> Set value to none if the dll is already loaded ( and you want to update it manually)</li>
+</ul>
+if you don't have Mysql : 
+Use Dockerfile(Update SQL password), from the directory where is the Dockerfile : <code>docker build -f Dockerfile -t poseidon:test .</code>
+<br/>To build the app : <code>clean package spring-boot:repackage</code>
+<br/>To launch it : <code>java -jar "your jar name"</code> (by default the name is : poseidon-1.0.jar)
+
+### BDD DLL
+Use the file doc/data.sql for create DLL and import the first admin account (login : ADMIN, password : Admin1234!)
 
 
-## Setup with Intellij IDE
-1. Create project from Initializr: File > New > project > Spring Initializr
-2. Add lib repository into pom.xml
-3. Add folders
-    - Source root: src/main/java
-    - View: src/main/resources
-    - Static: src/main/resource/static
-4. Create database with name "demo" as configuration in application.properties
-5. Run sql script to create table doc/BidListData.sql
 
-## Implement a Feature
-1. Create mapping domain class and place in package com.nnk.springboot.domain
-2. Create repository class and place in package com.nnk.springboot.repositories
-3. Create controller class and place in package com.nnk.springboot.controllers
-4. Create view files and place in src/main/resource/templates
 
-## Write Unit Test
-1. Create unit test and place in package com.nnk.springboot in folder test > java
 
-## Security
-1. Create user service to load user from  database and place in package com.nnk.springboot.services
-2. Add configuration class and place in package com.nnk.springboot.config

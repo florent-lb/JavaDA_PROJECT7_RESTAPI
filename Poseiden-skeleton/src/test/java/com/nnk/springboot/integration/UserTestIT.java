@@ -47,12 +47,12 @@ public class UserTestIT {
     @Test
     @WithUserDetails("admin")
     @DisplayName("User Add")
-    public void add_WhenAddUser_MustHaveNewBid() throws Exception {
+    public void add_WhenAddUser_MustHaveNewUser() throws Exception {
 
         User user = new User();
-        user.setPassword("test");
+        user.setPassword("Test125?!");
         user.setFullname("test");
-        user.setRole("user");
+        user.setRole("ADMIN");
         user.setUsername("test");
 
         mockMvc.perform(post("/user/validate")
