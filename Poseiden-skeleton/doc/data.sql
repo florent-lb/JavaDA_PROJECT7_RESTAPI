@@ -94,4 +94,4 @@ CREATE TABLE Users (
   PRIMARY KEY (id)
 );
 -- password clear : Admin1234!
-insert into Users(fullname, username, password, role) values("ADMIN", "ADMIN", "$2a$10$wcZl3VbkiiTlAdJzcwKEDuIEhWkN8dYQ2lFQN0Fln3F531TLR5TgC", "ADMIN");
+insert into users(fullname, username, password, role) values("ADMIN", "ADMIN", "$2a$10$wcZl3VbkiiTlAdJzcwKEDuIEhWkN8dYQ2lFQN0Fln3F531TLR5TgC", "ADMIN");
